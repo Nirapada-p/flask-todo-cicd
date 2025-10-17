@@ -4,9 +4,6 @@ from app.models import db
 from app.routes import api
 from app.config import config
 
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
-
 
 def create_app(config_name=None):
     """Application factory pattern"""
@@ -34,12 +31,6 @@ def create_app(config_name=None):
                 'todos': '/api/todos'
             }
         })
-    
-    limiter = Limiter(
-    app=app,
-    key_func=get_remote_address,
-    default_limits=["200 per day", "50 per hour"]
-)
 
     # Error handlers
     @app.errorhandler(404)
@@ -64,8 +55,6 @@ def create_app(config_name=None):
             'success': False,
             'error': 'Internal server error'
         }), 500
-    
-    
 
     # Create tables
     with app.app_context():
